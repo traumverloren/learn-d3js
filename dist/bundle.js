@@ -77,9 +77,19 @@ var d3 = _interopRequireWildcard(_d);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var square = d3.selectAll("rect");
-square.style("fill", "orange");
+square.style("fill", "cyan");
 
-console.log("hey");
+var dataset = [5, 10, 15, 20, 25];
+d3.select("body").selectAll("p").data(dataset).enter().append("p").text(function (d) {
+    return d;
+}).style("color", function (d) {
+    if (d > 15) {
+        //Threshold of 15
+        return "red";
+    } else {
+        return "black";
+    }
+});
 
 /***/ }),
 /* 1 */
