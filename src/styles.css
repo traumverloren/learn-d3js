@@ -4,5 +4,8 @@ div.bar {
     height: 75px;   /* We'll override this later */
     background-color: darkturquoise;
     margin-right: 2px;
+}
 
+svg {
+  margin-top: 100px;
 }
