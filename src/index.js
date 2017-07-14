@@ -19,7 +19,7 @@ let svg1 = d3.select("body")
            .attr("width", width)
            .attr("height", height);
 
-const width = 500;
+const width = 600;
 const height = 100;
 const barPadding = 1;
 
@@ -104,43 +104,78 @@ const scatterTitle = d3.select("body")
 br;
 
 // scatter plot
-var dataset3 = [
-                [5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
-                [410, 12], [475, 44], [25, 67], [85, 21], [220, 88]
-              ];
+let dataset3 = [];
+let numDataPoints = 50;
+let xRange = Math.random() * 1000;
+let yRange = Math.random() * 1000;
+for (var i = 0; i < numDataPoints; i++) {
+    var newNumber1 = Math.round(Math.random() * xRange);
+    var newNumber2 = Math.round(Math.random() * yRange);
+    dataset3.push([newNumber1, newNumber2]);
+}
 
 const svg3 = d3.select("body")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
 
+
+let padding = 30;
+
+// scales
+let xScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset3, function(d) { return d[0]; })])
+                    .range([padding, width-padding* 2]);
+
+let yScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset3, function(d) { return d[1]; })])
+                    .range([height-padding, padding]);
+
+let rScale = d3.scaleLinear()
+                     .domain([0, d3.max(dataset3, function(d) { return d[1]; })])
+                     .range([2, 5]);
+
 const scatterCircles = svg3.selectAll("circle")
                          .data(dataset3)
                          .enter()
                          .append("circle")
                          .attr("cx", function(d) {
-                              return d[0];
+                              return xScale(d[0]);
                          })
                          .attr("cy", function(d) {
-                              return d[1];
+                              return yScale(d[1]);
                          })
                          .attr("r", function(d) {
-                            return Math.sqrt(height - d[1]);
+                            return rScale(d[1]);
                         });
+  // 
+  // const scatterLabels = svg3.selectAll("text")
+  //                          .data(dataset3)
+  //                          .enter()
+  //                          .append("text")
+  //                          .text(function(d) {
+  //                               return d[0] + "," + d[1];
+  //                          })
+  //                          .attr("x", function(d) {
+  //                               return xScale(d[0]);
+  //                          })
+  //                          .attr("y", function(d) {
+  //                               return yScale(d[1]);
+  //                          })
+  //                          .attr("font-family", "sans-serif")
+  //                          .attr("font-size", "11px")
+  //                          .attr("fill", "red");
 
-  const scatterLabels = svg3.selectAll("text")
-                           .data(dataset3)
-                           .enter()
-                           .append("text")
-                           .text(function(d) {
-                                return d[0] + "," + d[1];
-                           })
-                           .attr("x", function(d) {
-                                return d[0];
-                           })
-                           .attr("y", function(d) {
-                                return d[1];
-                           })
-                           .attr("font-family", "sans-serif")
-                           .attr("font-size", "11px")
-                           .attr("fill", "red");
+
+let xAxis = d3.axisBottom(xScale).ticks(5);
+let yAxis = d3.axisLeft(yScale).ticks(4);
+
+svg3.append("g")
+   .attr("class", "axis")
+   .attr("transform", `translate(0, ${height-padding})`)
+   .call(xAxis);
+
+svg3.append("g")
+  .attr("class", "axis")
+  .attr("transform", `translate(${padding}, 0)`)
+  .call(yAxis);

@@ -14,3 +14,14 @@ div.bar {
 svg {
   margin-top: 10px;
 }
+
+.axis path, .axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: sans-serif;
+  font-size: 10px;
+}
